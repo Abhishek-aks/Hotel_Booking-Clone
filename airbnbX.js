@@ -19,7 +19,7 @@ async function getDetails(location, checkin, checkout, guest) {
   try {
     const response = await fetch(url, options);
     const result = await response.json();
-    console.log(result)
+    // console.log(result)
     data = result.results;
       console.log(data)
       // getCards(data);
@@ -1079,32 +1079,42 @@ async function getDetails(location, checkin, checkout, guest) {
     function getCards(data){
         const room_container=document.querySelector(".left-col");
         const n=data.length;
+        // let revRate= 0.0;
+        // if(data[room].rating === "undefined"){
+        //     revRate = data[room].rating;
+        // } console.log(revRate);
         let p=document.createElement("p");
         p.innerText=`${n}+ stays in ${data[0].city}`
         room_container.appendChild(p);
+        
         for (let room=0;room<n/2;room++){
             const house=document.createElement("div");
             house.setAttribute("class","house");
             const freebies= data[room].previewAmenities.join(" ");
             house.innerHTML=`
-            <div class="house-img">
-                        <img src="${data[room].images[0]}" alt="">
+                    <div class="house-img">
+                        <a href="booking.html" id=""><img src="${data[room].images[0]}"></a>
                     </div>
                     <div class="house-info">
-                        <div class="house-title">
-                            <p>${data[room].name}</p>
+                      <p>${data[room].name}</p>
+                        
+                      <div class="house-title">
                             <h3>${data[room].type}</h3>
-                        </div>
-                        <i class="ri-heart-line"></i>
-                        <div class="house-offerings">
-                            <p id="offering">${data[room].persons} guests · Entire Home · ${data[room].beds} beds · ${data[room].bathrooms} bath</p>
-                        <p>${freebies}</p>
-                        </div>
-                        <p id="house-rating">${data[room].rating} <i class="ri-star-fill"></i> (${data[room].reviewsCount} reviews)</p>
-                        <div class="house-price">
-                            <h4>${data[room].price.currency} ${data[room].price.rate}<span>/ night</span></h4>
-                        </div>
-                    </div>
+                            <i class="ri-heart-line"></i>
+                      </div> 
+                      <div id="cost-btn"></div>
+
+                      <div class="house-offerings">
+                              <p id="offering">${data[room].persons} guests · Entire Home · ${data[room].beds} beds · ${data[room].bathrooms} bath</p>
+                          <p>${freebies}</p>
+                      </div>
+                        
+                          <p id="house-rating">${data[room].rating} &nbsp &nbsp<i class="star ri-star-fill"></i>(${data[room].reviewsCount} reviews)</p>
+                          <div class="room-price">          
+                          <h4>${data[room].price.currency} ${data[room].price.rate}<span>/ night</span></h4>
+                          <button class="detail-btn">View</button>
+                          </div>
+                    </div> 
             `;
           const house_redirect=house.querySelector(".house-img img")
           house_redirect.addEventListener("click",(e)=>{
@@ -1112,11 +1122,11 @@ async function getDetails(location, checkin, checkout, guest) {
             houseFullDetails(data[room])
           });
             // adding cost breakdown 
-            const house_title=house.querySelector(".house-title")
+            const costing=house.querySelector("#cost-btn")
             const btn=document.createElement("button");
             btn.innerText='cost breakdown'
            btn.addEventListener("click",()=>{CostBreak(data[room])});
-          house_title.appendChild(btn);
+          costing.appendChild(btn);
             map_details.push({latitude:data[room].lat,lagtitude:data[room].lng,});
             room_container.appendChild(house);
         }
@@ -1189,7 +1199,8 @@ async function getDetails(location, checkin, checkout, guest) {
       const gallery=document.createElement("div");
       gallery.setAttribute("class", "gallery");
       gallery.innerHTML=`
-      <div class="gallery-img-1"><img src="${data.images[0]}"></div>
+      <div class="gallery-img-1">
+                <img src="${data.images[0]}"></div>
                 <div><img src="${data.images[1]}"></div>
                 <div><img src="${data.images[2]}"></div>
                 <div><img src="${data.images[3]}"></div>
@@ -1213,7 +1224,7 @@ async function getDetails(location, checkin, checkout, guest) {
                         <p class="about-room">${data.type}</p>
                         <h2 id="room-policy">${data.cancelPolicy}</h2>
                     </div>
-                    <div class="wt-this-f">
+                    <div class="hotel-amenities">
                         <h1>what this place offers</h1>
                         <p>air</p>
                         <p>wifi</p>
